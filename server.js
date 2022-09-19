@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 var corsOptions = 
-// ["https://www.dlt-license.com","https://dlt-license.com"];
+// ["https://www.bngloan.com","https://bngloan.com"];
 // "https://react-fontend-5c241.web.app";
 "http://localhost:3000";
 // app.use(cors(corsOptions));

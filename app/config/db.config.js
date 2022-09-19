@@ -1,6 +1,7 @@
 module.exports = {
     HOST: "localhost",
     USER: "root",
+    //PASSWORD: "BngLoanAa123456",
     PASSWORD: "",
     DB: "loan_database",
     dialect: "mysql",

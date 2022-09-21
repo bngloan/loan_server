@@ -45,11 +45,12 @@ exports.updateloanuser = (req, res) => {
   const peopleId = req.body.peopleId;
   const status = req.body.status;
   const loanId = req.body.loanId;
+  const loanreq = req.body.loanreq;
 
   if (status === 0) {
     loanstate
       .update(
-        { status: status, given: 0, paid: 0, loanId: loanId },
+        { status: status, given: 0, paid: 0, loanId: loanId,loanreq: loanreq, },
         {
           where: { id: id },
         }
@@ -103,7 +104,7 @@ exports.updateloanuser = (req, res) => {
   } else {
     loanstate
       .update(
-        { status: status, given: 0, paid: 0, loanId: loanId },
+        { status: status, given: 0, paid: 0, loanId: loanId,loanreq:loanreq },
         {
           where: { id: id },
         }

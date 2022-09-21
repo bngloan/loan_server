@@ -17,50 +17,25 @@ function makeid(length) {
 
 exports.createLoan = async (req, res) => {
   if (req.body.peopleId != null) {
-    const peopleId = req.body.peopleId;
-    // loanstate.findOne({ where: { peopleId: peopleId } }).then(async (check) => {
-      // if (check) {
-        // loanstate
-        //   .update(req.body, {
-        //     where: { id: req.body.id },
-        //   })
-        //   .then((data) => {
-        //     people.update(
-        //       { amount: req.body.loanreq },
-        //       {
-        //         where: { id: peopleId },
-        //       }
-        //     );
-        //     res.status(200).send({ status: true });
-        //   })
-        //   .catch((err) => {
-        //     res.status(500).send({
-        //       status: 500,
-        //       message:
-        //         err.message || "Some error occurred while creating the Loan.",
-        //     });
-        //   });
-        // return;
-      // }
-      data_loan = {
-        idloanstate: makeid(12),
-        loanreq: req.body.loanreq,
-        peopleId: req.body.peopleId,
-        loanId: req.body.loanId,
-      };
-      return await loanstate
-        .create(data_loan)
-        .then((data) => {
-          res.status(200).send({ status: true });
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(500).send({
-            status: 500,
-            message:
-              err.message || "Some error occurred while creating the Loan.",
-          });
+    data_loan = {
+      idloanstate: makeid(12),
+      loanreq: req.body.loanreq,
+      peopleId: req.body.peopleId,
+      loanId: req.body.loanId,
+    };
+    return await loanstate
+      .create(data_loan)
+      .then((data) => {
+        res.status(200).send({ status: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({
+          status: 500,
+          message:
+            err.message || "Some error occurred while creating the Loan.",
         });
+      });
     // });
   }
 };
@@ -69,11 +44,15 @@ exports.updateloanuser = (req, res) => {
   const id = req.body.id;
   const peopleId = req.body.peopleId;
   const status = req.body.status;
+  const loanId = req.body.loanId;
 
   if (status === 0) {
     loanstate
       .update(
-        { status: status },
+        { status: status,
+          given: 0,
+          paid: 0,
+          loanId:loanId },
         {
           where: { id: id },
         }
@@ -97,14 +76,20 @@ exports.updateloanuser = (req, res) => {
   } else if (status === 1) {
     loanstate
       .update(
-        { status: status },
+        {
+          status: status,
+          loanreq: req.body.loanreq,
+          given: req.body.given,
+          paid: req.body.paid,
+          loanId:loanId
+        },
         {
           where: { id: id },
         }
       )
       .then((data) => {
         people.update(
-          { amount:  req.body.loanreq},
+          { amount: req.body.loanreq },
           {
             where: { id: peopleId },
           }
@@ -121,14 +106,18 @@ exports.updateloanuser = (req, res) => {
   } else {
     loanstate
       .update(
-        { status: status },
+        { status: status,
+          given: 0,
+          paid: 0, 
+          loanId:loanId
+        },
         {
           where: { id: id },
         }
       )
       .then((data) => {
         people.update(
-          { amount:  0.0 },
+          { amount: 0.0 },
           {
             where: { id: peopleId },
           }
@@ -191,9 +180,32 @@ exports.getreqloan = async (req, res) => {
 
 exports.getAllLoan = async (req, res) => {
   loan
-    .findAll({order: [
-      ['interest', 'DESC']
-  ],})
+    .findAll({ order: [["interest", "DESC"]] })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving loan.",
+      });
+    });
+};
+
+exports.getOneLoan = async (req, res) => {
+  const id = req.params.id;
+  loanstate
+    .findAll(
+      {
+        include: [
+          {
+            model: loan,
+            as: "loans",
+          },
+        ],
+        order: [["createdAt", "DESC"]],
+      },
+      { where: { peopleId: id } }
+    )
     .then((data) => {
       res.send(data);
     })

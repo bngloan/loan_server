@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 var corsOptions = 
-// ["https://www.bngloan.com","https://bngloan.com"];
+["https://www.bngloan.com","https://bngloan.com"];
 // "https://react-fontend-5c241.web.app";
-"http://localhost:3000";
+// "http://localhost:3000";
 // app.use(cors(corsOptions));
 app.use(cors({credentials: true, origin: corsOptions}));
 // parse requests of content-type - application/json
@@ -25,17 +25,18 @@ const SetStatus = db.setstatus;
 const User = db.user;
 const Bank = db.bank;
 const Loan = db.loan;
+const Weburl = db.weburl;
 
 
-db.sequelize.sync();
+// db.sequelize.sync();
 
-// db.sequelize.sync({force: true}).then(() => {
-//     console.log('Drop and Resync Db');
-//     initial();
-//     initial2();
-//     initial3();
-    
-//   });
+db.sequelize.sync({force: true}).then(() => {
+    console.log('Drop and Resync Db');
+    initial();
+    initial2();
+    initial3();
+     initial4();
+  });
 
 // simple route
 app.get("/", (req, res) => {
@@ -49,7 +50,7 @@ require('./app/routes/admin.routes')(app);
 require('./app/routes/people.routes')(app);
 require('./app/routes/bank.routes')(app);
 require('./app/routes/loan.routes')(app);
-
+require('./app/routes/weburl.routes')(app);
 
 
 
@@ -156,5 +157,25 @@ function initial3() {
       Bank.create({
         bankname: "ธนาคารยูโอบี"
       });
+  }
+
+  function initial4(){
+    Weburl.create({
+      name: "facebook",
+      nameurl: "https://lin.ee/LtrrqGM"
+    });
+    Weburl.create({
+      name: "line",
+      nameurl: "https://lin.ee/LtrrqGM"
+    });
+    Weburl.create({
+      name: "website",
+      nameurl: "https://bngloan.com/"
+    });
+    Weburl.create({
+      name: "gmail",
+      nameurl: "https://lin.ee/LtrrqGM"
+    });
+   
   }
 

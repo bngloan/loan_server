@@ -4,6 +4,7 @@ module.exports =(app)=>{
     var router = require("express").Router();
 
     router.get('/getreqloan',loan.getreqloan)
+    router.get('/getonereqloan/:id',loan.getOneLoan)
     router.get('/getallloan',loan.getAllLoan)
     router.post('/newloan',loan.createLoan)
     router.post('/updateloanuser',loan.updateloanuser)

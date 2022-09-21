@@ -33,6 +33,7 @@ db.bankuser = require("../models/bankuser.model.js")(sequelize, Sequelize);
 db.people = require("../models/people.model.js")(sequelize, Sequelize);
 db.loan = require("../models/loan.model.js")(sequelize, Sequelize);
 db.loanstate = require("../models/loanstate.model.js")(sequelize, Sequelize);
+db.weburl = require("../models/weburl.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",

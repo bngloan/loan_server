@@ -17,6 +17,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.TINYINT,
       defaultValue: 0,
     },
+    given:{
+      type: Sequelize.TINYINT,
+      defaultValue: 0,
+    },paid:{
+      type: Sequelize.FLOAT(11, 2),
+      defaultValue: 0.00,
+    }
   });
   return loanstate;
 };

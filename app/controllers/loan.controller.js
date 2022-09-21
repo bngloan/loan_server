@@ -49,10 +49,7 @@ exports.updateloanuser = (req, res) => {
   if (status === 0) {
     loanstate
       .update(
-        { status: status,
-          given: 0,
-          paid: 0,
-          loanId:loanId },
+        { status: status, given: 0, paid: 0, loanId: loanId },
         {
           where: { id: id },
         }
@@ -81,7 +78,7 @@ exports.updateloanuser = (req, res) => {
           loanreq: req.body.loanreq,
           given: req.body.given,
           paid: req.body.paid,
-          loanId:loanId
+          loanId: loanId,
         },
         {
           where: { id: id },
@@ -106,11 +103,7 @@ exports.updateloanuser = (req, res) => {
   } else {
     loanstate
       .update(
-        { status: status,
-          given: 0,
-          paid: 0, 
-          loanId:loanId
-        },
+        { status: status, given: 0, paid: 0, loanId: loanId },
         {
           where: { id: id },
         }
@@ -194,18 +187,16 @@ exports.getAllLoan = async (req, res) => {
 exports.getOneLoan = async (req, res) => {
   const id = req.params.id;
   loanstate
-    .findAll(
-      {
-        include: [
-          {
-            model: loan,
-            as: "loans",
-          },
-        ],
-        order: [["createdAt", "DESC"]],
-      },
-      { where: { peopleId: id } }
-    )
+    .findAll({
+      where: { peopleId: id },
+      include: [
+        {
+          model: loan,
+          as: "loans",
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    })
     .then((data) => {
       res.send(data);
     })

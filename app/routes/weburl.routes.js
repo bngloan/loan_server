@@ -5,6 +5,8 @@ module.exports =(app)=>{
 
     router.get('/getallweburl',weburl.getAllWeburl);
     router.put('/updateweburl',weburl.updateWeburl);
+    router.post('/addweburl',weburl.createweburl);
+    router.delete('/delweburl/:id',weburl.deleteweburl);
 
     app.use("/api/weburl",router);
     
